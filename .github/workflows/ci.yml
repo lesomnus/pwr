@@ -21,6 +21,27 @@ jobs:
         run: |
           go test -run '^$' -fuzz '^FuzzReader$' -fuzztime 10s -parallel 2
           go test -run '^$' -fuzz '^FuzzCollections$' -fuzztime 10s -parallel 2
+  cel:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ['1.23.x', 'stable']
+    defaults:
+      run:
+        working-directory: cel
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+          cache-dependency-path: cel/go.sum
+      - run: test -z "$(gofmt -l *.go)"
+      - run: go mod tidy && git diff --exit-code -- go.mod go.sum
+      - run: go work init .. .
+      - run: go vet ./...
+      - run: go test -race ./...
+      - if: matrix.go == 'stable'
+        run: go test -run '^$' -fuzz '^FuzzEvaluation$' -fuzztime 10s -parallel 2
   data:
     runs-on: ubuntu-latest
     steps:

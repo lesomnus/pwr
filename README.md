@@ -5,8 +5,9 @@ wire bytes, using an existing `protoreflect.MessageDescriptor` and a per-message
 offset cache. It does not need a generated reader for each message type.
 
 This is an experimental package. The API supports all singular scalar types, nested messages/groups,
-oneofs, protobuf presence, repeated/packed fields, and maps. A separate CEL
-adapter is being added.
+oneofs, protobuf presence, repeated/packed fields, maps, bounded native conversion,
+and reader reuse/pooling. The [separate CEL adapter](cel/README.md) supports
+lazy field evaluation and Any payload dispatch.
 
 ## Install
 
@@ -81,8 +82,8 @@ eager standard-decoder fallbacks for complete validation and native conversion.
 
 - `Schema` is immutable and can be shared between goroutines. Each `Reader`
   belongs to one message and must not be used concurrently.
-- The reader and returned strings borrow the input bytes. Keep that buffer
-  immutable and alive while **either the reader or any returned string** is used.
+- Readers, strings, bytes, child views, collections, and CEL results borrow the
+  input bytes. Keep that buffer immutable while any of those values is used.
 - Missing scalars return their descriptor default. `Has` reports protobuf
   presence; `WhichOneof` reports the selected field. Proto3 optional is supported.
 - Returned strings are checked for valid UTF-8. `pwr.AssumeValidUTF8()` skips
@@ -100,8 +101,8 @@ eager standard-decoder fallbacks for complete validation and native conversion.
 
 The experiments measured historical prototypes, not this public package.
 They include CEL adapters and native kernels that are not part of the root API.
-The root module depends only on the Go protobuf module; historical benchmark
-modules and their dependencies are isolated under `experiments/`.
+The root module depends only on the Go protobuf module. The supported `cel/`
+adapter and historical benchmark modules under `experiments/` are separate modules.
 
 ## Checks
 
@@ -110,6 +111,8 @@ go test -race ./...
 go vet ./...
 go test -run '^$' -fuzz '^FuzzReader$' -fuzztime 10s -parallel 2
 python3 scripts/check_experiments.py
+# Run the adapter checks separately, from cel/:
+# go test -race ./... && go vet ./...
 ```
 
 Apache-2.0 licensed. See [LICENSE](LICENSE).

@@ -1,6 +1,6 @@
 # pwr 설계 결정
 
-상태: 초기 experimental API. 아래의 현재 구현과 후속 설계를 구분한다.
+상태: experimental API. 아래 기능은 공개 패키지에 구현되어 있으며 안정화 과정에서 API가 바뀔 수 있다.
 
 ## 목적과 현재 범위
 
@@ -9,7 +9,8 @@
 위치를 캐시한다. CEL이나 payday를 모르는 독립 Go 패키지로 유지한다.
 
 현재 모든 singular scalar getter, nested message/group 병합, real oneof와
-presence, repeated/packed·map, 재사용과 pool을 지원한다. CEL adapter는 별도 모듈로 추가한다.
+presence, repeated/packed·map, 재사용과 pool, field plan, 전체 검증/native 변환을 지원한다.
+CEL adapter는 `github.com/lesomnus/pwr/cel` 별도 모듈로 제공한다.
 `WithLimits`로 중첩 깊이와 reader tree의 wire record/byte 방문량을 제한한다.
 
 
@@ -70,7 +71,7 @@ descriptor table은 생성된 Go switch와 비슷한 CEL 시간을 보였고, C�
   required 필드의 존재를 일반 getter가 강제로 검증하지는 않는다.
 - 발견한 wire/UTF-8 오류는 sticky다. unknown/unsupported getter 요청은
   Reader의 나머지 정상 접근을 막지 않는다. nil/zero Schema와 과대 입력은
-  첫 `String` 호출에서 오류로 보고한다.
+  첫 필드 접근에서 오류로 보고한다.
 - 반환 문자열은 `unsafe.String`을 통해 원본 bytes를 참조한다. **Reader 또는
   반환 문자열을 쓰는 동안 buffer를 변경·재활용하지 않는다.** Reader를 버린
   뒤에도 반환 문자열을 사용한다면 이 계약은 계속된다. 독립 수명이 필요하면
@@ -125,6 +126,26 @@ protobuf resolver의 처리를 따른다.
 그 뒤 sparse 번호 처리, descriptor 기본값, UTF-8 기본 검증 등을 보완했으므로
 측정값을 현재 라이브러리의 성능 보장으로 제시하지 않는다.
 
-CEL adapter는 별도 계층으로 구성할 수 있다. 실제 payday 적용에서는 이미
+CEL adapter는 별도 계층으로 구현했다. 실제 payday 적용에서는 이미
 unmarshal된 공개 이미지를 재사용하는 경로도 검토해야 한다. wire reader만으로
 권한 검사·projection·SQL·broker·전송 비용이 사라지지는 않는다.
+
+
+## CEL adapter
+
+`pwrcel.New(descriptors...)`와 `adapter.EnvOptions()`로 CEL 환경을 구성한다.
+Reader를 activation 값으로 전달하면 scalar, nested, repeated/map, oneof와
+presence를 pwr로 평가한다. `type(message)`는 payload를 읽지 않는다.
+`has()`와 optional 접근도 wire 오류를 CEL 오류로 전달한다. 이를 위해 오류를
+반환할 수 없는 CEL의 bool-only optimized presence callback은 사용하지 않는다.
+
+Any는 type_url로 기존 descriptor를 찾아 `View`로 payload를 해석하며 child와
+depth/방문 예산을 공유한다. Timestamp·Duration·wrapper·JSON WKT 변환,
+전체 message 동등성, native 변환에는 표준 CEL/protobuf의 eager 경로를 사용한다.
+동등성은 proto.Equal이 아닌 CEL 의미(NaN 포함)를 따른다. 전역 registry에 없는
+Any의 전체 동등성은 CEL 표준 경로와 같이 bytes 비교가 될 수 있다.
+
+환경 생성마다 registry를 복제해 OptionalTypes 등 옵션이 source Adapter를
+변경하지 않게 한다. Reader는 평가별로 분리하고 descriptor와 program은 공유한다.
+CEL은 별도 Go module이므로 코어를 사용하는 프로그램에 CEL/ANTLR 의존성을
+추가하지 않는다. 구체적인 API와 실행 예제는 [adapter 문서](../cel/README.md)에 있다.
