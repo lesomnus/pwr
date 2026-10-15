@@ -11,11 +11,11 @@ import (
 )
 
 func ExampleAdapter() {
-	md := (&typepb.Type{}).ProtoReflect().Descriptor()
-	schema, err := pwr.Compile(md)
+	schema, err := pwr.CompileMessage(&typepb.Type{})
 	if err != nil {
 		panic(err)
 	}
+	md := schema.Descriptor()
 	adapter, err := pwrcel.New(md)
 	if err != nil {
 		panic(err)

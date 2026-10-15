@@ -12,9 +12,9 @@ Register descriptors once, compile your expression once, and pass a new or reset
 reader for each evaluation:
 
 ```go
-md := (&typepb.Type{}).ProtoReflect().Descriptor()
-schema, err := pwr.Compile(md)
+schema, err := pwr.CompileMessage(&typepb.Type{})
 if err != nil { return err }
+md := schema.Descriptor()
 adapter, err := pwrcel.New(md)
 if err != nil { return err }
 options := append(adapter.EnvOptions(),

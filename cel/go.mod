@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	cel.dev/cel-go v0.32.0
-	github.com/lesomnus/pwr v0.0.0-20261015163941-b82e1075e076
+	github.com/lesomnus/pwr v0.0.0-20261015171245-2ec220d490d1
 	google.golang.org/protobuf v1.36.12
 )
 
