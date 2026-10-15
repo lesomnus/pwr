@@ -194,7 +194,16 @@ func (a *Adapter) NativeToValue(value any) ref.Val {
 	switch v := value.(type) {
 	case ref.Val:
 		return v
+	case *anypb.Any:
+		if v == nil {
+			return types.UnsupportedRefValConversionErr(v)
+		}
+		return a.nativeAny(v.GetTypeUrl(), v.GetValue())
 	case protoreflect.Message:
+		if v.Descriptor().FullName() == "google.protobuf.Any" {
+			fields := v.Descriptor().Fields()
+			return a.nativeAny(v.Get(fields.ByNumber(1)).String(), v.Get(fields.ByNumber(2)).Bytes())
+		}
 		return a.wrapNative(a.registry.NativeToValue(v.Interface()))
 	case protoreflect.Value:
 		return a.NativeToValue(v.Interface())
@@ -283,6 +292,18 @@ func (a *Adapter) NativeToValue(value any) ref.Val {
 		return a.wrapNative(a.registry.NativeToValue(value))
 	}
 }
+
+// A decoded envelope still carries an encoded Any payload. Keep that payload
+// as a wire view instead of using the registry's eager Any.UnmarshalNew path.
+func (a *Adapter) nativeAny(url string, raw []byte) ref.Val {
+	name := protoreflect.FullName(url[strings.LastIndex(url, "/")+1:])
+	s, err := a.resolve(name)
+	if err != nil {
+		return types.NewErr("%v", err)
+	}
+	return a.NativeToValue(s.NewReader(raw))
+}
+
 func wellKnown(n protoreflect.FullName) bool {
 	switch n {
 	case "google.protobuf.Timestamp", "google.protobuf.Duration", "google.protobuf.Struct", "google.protobuf.Value", "google.protobuf.ListValue", "google.protobuf.BoolValue", "google.protobuf.BytesValue", "google.protobuf.DoubleValue", "google.protobuf.FloatValue", "google.protobuf.Int32Value", "google.protobuf.Int64Value", "google.protobuf.StringValue", "google.protobuf.UInt32Value", "google.protobuf.UInt64Value":

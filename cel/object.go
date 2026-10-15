@@ -133,6 +133,15 @@ func (n *nativeObject) Get(k ref.Val) ref.Val {
 	if !ok {
 		return types.NewErr("no such field %s", name)
 	}
+	if fd.Type.Kind() == types.AnyKind {
+		// CEL's normal field accessor unwraps Any before calling the adapter.
+		// Keep the reflected envelope so its payload can remain a wire view.
+		m := n.Value().(proto.Message).ProtoReflect()
+		field := m.Descriptor().Fields().ByName(protoreflect.Name(name))
+		if field != nil && !field.IsList() && !field.IsMap() && field.Message() != nil && field.Message().FullName() == "google.protobuf.Any" {
+			return n.adapter.NativeToValue(m.Get(field).Message())
+		}
+	}
 	v, err := fd.GetFrom(n.Value())
 	if err != nil {
 		return types.NewErr("%v", err)

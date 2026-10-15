@@ -236,6 +236,43 @@ func TestWellKnown(t *testing.T) {
 	}
 }
 
+func TestNativeAnyRemainsLazy(t *testing.T) {
+	md := fixture(t)
+	a := adapter(t, md)
+	payload := &anypb.Any{TypeUrl: "types.test/test.Event", Value: bytesField(nil, 1, []byte("inside"))}
+	for _, value := range []any{payload, payload.ProtoReflect()} {
+		p := program(t, a, `type(m) == test.Event && m.name == "inside"`, cel.Variable("m", cel.DynType))
+		truth(t, p, map[string]any{"m": value})
+	}
+	generated := &typepb.Option{Value: payload}
+	ga := adapter(t, md, generated.ProtoReflect().Descriptor())
+	gp := program(t, ga, `type(m.value) == test.Event && m.value.name == "inside"`, cel.Variable("m", cel.ObjectType("google.protobuf.Option")))
+	truth(t, gp, map[string]any{"m": generated})
+	// The dynamic type exists only in this adapter, not in the global registry.
+	outer := dynamicpb.NewMessage(md)
+	outer.Set(md.Fields().ByNumber(5), protoreflect.ValueOfMessage(payload.ProtoReflect()))
+	p := program(t, a, `type(m.payload) == test.Event && m.payload.name == "inside"`, cel.Variable("m", cel.ObjectType("test.Event")))
+	truth(t, p, map[string]any{"m": outer})
+	// Type-only evaluation must not decode an otherwise malformed payload.
+	payload.Value = append(payload.Value, 0x80)
+	p = program(t, a, `type(m.payload) == test.Event`, cel.Variable("m", cel.ObjectType("test.Event")))
+	truth(t, p, map[string]any{"m": outer})
+	p = program(t, a, `has(m.payload.name)`, cel.Variable("m", cel.ObjectType("test.Event")))
+	if _, _, err := p.Eval(map[string]any{"m": outer}); err == nil {
+		t.Fatal("presence swallowed a wire error")
+	}
+	if v := a.NativeToValue((*anypb.Any)(nil)); !types.IsError(v) {
+		t.Fatal(v)
+	}
+	var deep proto.Message = &typepb.Type{Name: "deep"}
+	for i := 0; i < 103; i++ {
+		deep, _ = anypb.New(deep)
+	}
+	if v := a.NativeToValue(deep); !types.IsError(v) || !strings.Contains(fmt.Sprint(v), "limit") {
+		t.Fatal(v)
+	}
+}
+
 func TestEqualityAndConversion(t *testing.T) {
 	md := (&typepb.Type{}).ProtoReflect().Descriptor()
 	a := adapter(t, md)

@@ -53,8 +53,10 @@ for each environment construction, so options such as `cel.OptionalTypes()` and
   relevant message. They enforce read limits, preserve CEL's NaN behavior, and
   use CEL's standard equality semantics. Any equality follows CEL's resolver:
   types missing from the global registry may fall back to byte comparison.
-- Native protobuf inputs are also accepted. These inputs are already decoded;
-  using this adapter does not recover wire-level savings for them.
+- Native protobuf inputs are also accepted. An encoded `Any` payload inside a
+  decoded envelope uses the same lazy wire view, without re-encoding the envelope
+  or eagerly unpacking the payload. Other already decoded fields use native
+  access; using this adapter does not recover their earlier decode cost.
 
 The default reader handles duplicate scalar/message occurrences. Enable
 `pwr.AssumeUniqueScalars()` only when the producer guarantees no duplicate
