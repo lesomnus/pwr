@@ -1,0 +1,8 @@
+{"backend":"c_codegen_first","fixture":"small","stage":"cel","fields":4,"rep":0,"n":1790,"ns":6315.379888268157,"bytes":1551,"allocs":32,"prepare_ns":361,"payload":209}
+{"backend":"c_codegen_first","fixture":"small","stage":"direct","fields":1,"rep":0,"n":106203,"ns":261.3732286281932,"bytes":112,"allocs":1,"prepare_ns":441,"payload":209}
+{"backend":"rust_codegen_first","fixture":"small","stage":"cel","fields":4,"rep":0,"n":1854,"ns":7291.418554476807,"bytes":1545,"allocs":32,"prepare_ns":300,"payload":209}
+{"backend":"c_codegen_first","fixture":"small","stage":"cel","fields":1,"rep":0,"n":2955,"ns":4463.7346869712355,"bytes":1304,"allocs":23,"prepare_ns":441,"payload":209}
+{"backend":"rust_codegen_first","fixture":"small","stage":"direct","fields":1,"rep":0,"n":78511,"ns":256.3424233546892,"bytes":112,"allocs":1,"prepare_ns":290,"payload":209}
+{"backend":"rust_codegen_first","fixture":"small","stage":"cel","fields":1,"rep":0,"n":3429,"ns":3885.5115193934093,"bytes":1304,"allocs":23,"prepare_ns":290,"payload":209}
+{"backend":"rust_codegen_first","fixture":"small","stage":"direct","fields":4,"rep":0,"n":64754,"ns":250.24315100225468,"bytes":112,"allocs":1,"prepare_ns":300,"payload":209}
+{"backend":"c_codegen_first","fixture":"small","stage":"direct","fields":4,"rep":0,"n":72129,"ns":247.40735349166079,"bytes":112,"allocs":1,"prepare_ns":361,"payload":209}

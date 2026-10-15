@@ -1,0 +1,33 @@
+{"backend":"c_generic_last","first_wins":false,"note":"one cgo call per field; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"c_codegen_last","first_wins":false,"note":"generated projection; one cgo call per event; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"c_generic_first","first_wins":true,"note":"one cgo call per field; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"c_codegen_first","first_wins":true,"note":"generated projection; one cgo call per event; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"csproto_safe","first_wins":false,"note":"selected raw fields; full outer scan; Fast controls buffer ownership","valid_utf8_assumed":true}
+{"backend":"csproto_fast","first_wins":false,"note":"selected raw fields; full outer scan; Fast controls buffer ownership","valid_utf8_assumed":true}
+{"backend":"dynamicgo_path","first_wins":true,"note":"one-time projection schema conversion from registered descriptors to DynamicGo descriptor","valid_utf8_assumed":true}
+{"backend":"hyperpb_copy","first_wins":false,"note":"parser compiled from existing descriptor; full decode","valid_utf8_assumed":false}
+{"backend":"hyperpb_alias","first_wins":false,"note":"parser compiled from existing descriptor; full decode","valid_utf8_assumed":false}
+{"backend":"molecule_last","first_wins":false,"note":"","valid_utf8_assumed":true}
+{"backend":"molecule_first","first_wins":true,"note":"","valid_utf8_assumed":true}
+{"backend":"rust_generic_last","first_wins":false,"note":"one cgo call per field; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"rust_codegen_last","first_wins":false,"note":"generated projection; one cgo call per event; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"rust_generic_first","first_wins":true,"note":"one cgo call per field; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"rust_codegen_first","first_wins":true,"note":"generated projection; one cgo call per event; no UTF8 validation","valid_utf8_assumed":true}
+{"backend":"go_codegen_last","first_wins":false,"note":"generated numeric switch, one scan for selected fields, alias strings","valid_utf8_assumed":true}
+{"backend":"go_codegen_first","first_wins":true,"note":"generated numeric switch, one scan for selected fields, alias strings","valid_utf8_assumed":true}
+{"backend":"go_kernel_field_last","first_wins":false,"note":"","valid_utf8_assumed":true}
+{"backend":"go_kernel_project_last","first_wins":false,"note":"","valid_utf8_assumed":true}
+{"backend":"go_kernel_field_first","first_wins":true,"note":"","valid_utf8_assumed":true}
+{"backend":"go_kernel_project_first","first_wins":true,"note":"","valid_utf8_assumed":true}
+{"backend":"go_generated_unmarshal","first_wins":false,"note":"generated protobuf decode once per event, reused by CEL","valid_utf8_assumed":false}
+{"backend":"go_dynamicpb","first_wins":false,"note":"standard descriptor reused; full dynamic decode","valid_utf8_assumed":false}
+{"backend":"wire_last_copy","first_wins":false,"note":"","valid_utf8_assumed":false}
+{"backend":"wire_last_alias","first_wins":false,"note":"","valid_utf8_assumed":false}
+{"backend":"wire_first_alias","first_wins":true,"note":"","valid_utf8_assumed":false}
+{"backend":"wire_first_trusted","first_wins":true,"note":"","valid_utf8_assumed":true}
+{"backend":"plan_last_alias","first_wins":false,"note":"","valid_utf8_assumed":false}
+{"backend":"plan_first_alias","first_wins":true,"note":"","valid_utf8_assumed":false}
+{"backend":"descriptor_table_last","first_wins":false,"note":"runtime descriptor to number-index lookup table, no resource codegen","valid_utf8_assumed":true}
+{"backend":"descriptor_table_first","first_wins":true,"note":"runtime descriptor to number-index lookup table, no resource codegen","valid_utf8_assumed":true}
+{"backend":"descriptor_table_last_kernel","first_wins":false,"note":"runtime descriptor to number-index lookup table, no resource codegen","valid_utf8_assumed":true}
+{"backend":"descriptor_table_first_kernel","first_wins":true,"note":"runtime descriptor to number-index lookup table, no resource codegen","valid_utf8_assumed":true}

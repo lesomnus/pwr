@@ -1,0 +1,24 @@
+{
+  "host": "B",
+  "start": 1792055211.6718545,
+  "binary": "extra",
+  "sha256": "a837e94809f7e05f55226a400eaaff58c362ef8c4d43dba63e41fac06d9681e1",
+  "bytes": 24229848,
+  "load_before": "1.03 0.68 0.40 1/695 515803",
+  "command": [
+    "taskset",
+    "-c",
+    "2",
+    "./extra",
+    "-duration",
+    "100ms",
+    "-count",
+    "3",
+    "-seed",
+    "645"
+  ],
+  "exit": 0,
+  "elapsed": 71.6886875629425,
+  "load_after": "1.01 0.76 0.45 1/695 515836",
+  "max_rss_kib": 64096
+}

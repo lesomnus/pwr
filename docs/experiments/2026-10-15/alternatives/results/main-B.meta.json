@@ -1,0 +1,24 @@
+{
+  "host": "B",
+  "start": 1792054801.8636906,
+  "binary": "bench",
+  "sha256": "15b8b5be9de4fd97600957a4c85cabd78f44cc5620a4d951328bc8c822becb8b",
+  "bytes": 24233912,
+  "load_before": "0.13 0.13 0.12 1/700 515558",
+  "command": [
+    "taskset",
+    "-c",
+    "2",
+    "./bench",
+    "-duration",
+    "100ms",
+    "-count",
+    "3",
+    "-seed",
+    "645"
+  ],
+  "exit": 0,
+  "elapsed": 240.5785140991211,
+  "load_after": "1.00 0.64 0.34 2/696 515679",
+  "max_rss_kib": 77976
+}

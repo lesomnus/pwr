@@ -1,0 +1,29 @@
+bin/scanbench: go1.27.1
+	path	example.com/cel-wire-lab/cmd/scanbench
+	mod	example.com/cel-wire-lab	(devel)
+	dep	cel.dev/cel-go	v0.32.0	h1:irvpFKr5EuGPyxeME03ERh0rii1TX+BDAnB9eL3IvNk=
+	dep	cel.dev/expr	v0.25.2	h1:K6j46C81hXtZQfuX60cVWQFBJahKSE2gfRbNuvr5bFs=
+	dep	github.com/antlr4-go/antlr/v4	v4.13.1	h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYWrPrQ=
+	dep	github.com/lesomnus/cr	v0.0.0
+	=>	<cr-checkout>	(devel)
+
+	dep	github.com/lesomnus/payday	v0.0.0-20261014175654-5ac5cad67489	h1:eOHjejJkYAdKCLnBwL5NcGBA+YFRTa+uhVzqjlMg3Vw=
+	dep	github.com/lesomnus/protobuf-patch	v0.0.0-20260803175157-e1b7a0c2804f	h1:hIDTEG7vZCJ5M+j+OhI97pk6Q1mp1t3gXi1k96IB9f0=
+	dep	github.com/protobuf-orm/protobuf-orm	v0.0.0-20260906212449-04c0cd58f10a	h1:EXbJ28yY25wzt2HbzVkw7Tk46pF1GAHV+XMcC+kir40=
+	dep	go.yaml.in/yaml/v3	v3.0.5	h1:N6y/pJk8buWs9NY5ERU2HSMfm+IuD/OtfdAnq6kESPw=
+	dep	golang.org/x/exp	v0.0.0-20250911091902-df9299821621	h1:2id6c1/gto0kaHYyrixvknJ8tUK/Qs5IsmBtrc+FtgU=
+	dep	golang.org/x/net	v0.60.0	h1:79p50tfZlm0J9YfoDsSi639qSXNGVwEzOPLCxM2FsYU=
+	dep	golang.org/x/sys	v0.48.0	h1:bbX/i/6MgT9BVLM9RT1thmxL04yeTAhbEz4SyadbXoo=
+	dep	golang.org/x/text	v0.42.0	h1:JbOZXgfeCPU9gacVtYliJqOhD+zhrEqK4LfdpmlUZqI=
+	dep	google.golang.org/genproto/googleapis/api	v0.0.0-20260928230214-8a89bd6388cc	h1:rZHRz0ogq4Pid1IKtA/ivHi8XONVF5tqUQXA2TtgpkE=
+	dep	google.golang.org/genproto/googleapis/rpc	v0.0.0-20260928230214-8a89bd6388cc	h1:4bNTbnb44EqGVy9HaQxSY2jnafSUdgV3qHtedvNpDKg=
+	dep	google.golang.org/grpc	v1.83.2	h1:EManeRomTObA0BU7I8vXgg/78uE5MJ9M8B39EX2WscU=
+	dep	google.golang.org/protobuf	v1.36.12	h1:pJOKDDOyeXErUroCihFAd5LQuwXBSpVnKGrj5o/fwxc=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	-tags=wire,table,incremental
+	build	-trimpath=true
+	build	CGO_ENABLED=1
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1

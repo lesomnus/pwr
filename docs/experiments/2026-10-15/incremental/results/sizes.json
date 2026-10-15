@@ -1,0 +1,12 @@
+[
+  {
+    "binary": "scanbench",
+    "bytes": 17031431,
+    "sha256": "d3e8d740fba68c23f8723551e43780e22d1689081e5641c654702aa06d4e511f"
+  },
+  {
+    "binary": "size-base",
+    "bytes": 17023239,
+    "sha256": "e5aecce946d2757eb68e340c1685d89e388b0dfb95a8a044a075b2c5efaad2ac"
+  }
+]

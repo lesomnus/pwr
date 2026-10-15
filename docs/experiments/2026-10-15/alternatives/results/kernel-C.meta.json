@@ -1,0 +1,26 @@
+{
+  "host": "C",
+  "start": 1792055443.2068655,
+  "binary": "bench-kernel",
+  "sha256": "cc8876ad1a943ad2d70d3a957968cdc4f1fd1457054459f9d687e7ec5a4615e1",
+  "bytes": 24242104,
+  "load_before": "0.08 0.50 0.49 1/732 1447227",
+  "command": [
+    "taskset",
+    "-c",
+    "2",
+    "./bench-kernel",
+    "-duration",
+    "100ms",
+    "-count",
+    "3",
+    "-seed",
+    "409",
+    "-backend",
+    "go_kernel_field_last,go_kernel_field_first,go_kernel_project_last,go_kernel_project_first,go_codegen_last,go_codegen_first,c_generic_last,c_generic_first,rust_generic_last,rust_generic_first,c_codegen_last,c_codegen_first,rust_codegen_last,rust_codegen_first"
+  ],
+  "exit": 0,
+  "elapsed": 124.51712036132812,
+  "load_after": "1.10 0.77 0.59 1/732 1447292",
+  "max_rss_kib": 65864
+}

@@ -1,0 +1,4 @@
+{"backend":"go_codegen_first","fixture":"small","stage":"direct","fields":1,"rep":0,"n":93386,"ns":181.09878354357184,"bytes":112,"allocs":1,"prepare_ns":400,"payload":209}
+{"backend":"go_codegen_first","fixture":"small","stage":"cel","fields":1,"rep":0,"n":3415,"ns":4086.380380673499,"bytes":1307,"allocs":23,"prepare_ns":400,"payload":209}
+{"backend":"go_codegen_first","fixture":"small","stage":"cel","fields":4,"rep":0,"n":2508,"ns":5504.248006379586,"bytes":1545,"allocs":32,"prepare_ns":571,"payload":209}
+{"backend":"go_codegen_first","fixture":"small","stage":"direct","fields":4,"rep":0,"n":84460,"ns":209.8393677480464,"bytes":112,"allocs":1,"prepare_ns":571,"payload":209}

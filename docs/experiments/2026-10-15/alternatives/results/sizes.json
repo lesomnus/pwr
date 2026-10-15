@@ -1,0 +1,82 @@
+[
+  {
+    "tag": "baseline",
+    "exit": 0,
+    "build_seconds": 1.031569004058838,
+    "bytes": 17006855,
+    "sha256": "8115ec003a7f365052bbc52f6bece835518358e8696101718eeff1e38150b7b5"
+  },
+  {
+    "tag": "wire",
+    "exit": 0,
+    "build_seconds": 0.8140807151794434,
+    "bytes": 17019143,
+    "sha256": "9365f5a74e6616fa6cad45ff581e71477b45f589deef16a701eb54724c435eda"
+  },
+  {
+    "tag": "gencode",
+    "exit": 0,
+    "build_seconds": 0.765526294708252,
+    "bytes": 17010951,
+    "sha256": "97a2365d660a51983a2f37eba5299d6b681307dec6b87641eaee88eee91debdc"
+  },
+  {
+    "tag": "csproto",
+    "exit": 0,
+    "build_seconds": 0.7729513645172119,
+    "bytes": 17928455,
+    "sha256": "eb9562eaa4633b422bd8f0b73897ae3e49d64cd49ed2cebefbf60ef77447f77e"
+  },
+  {
+    "tag": "hyperpb",
+    "exit": 0,
+    "build_seconds": 1.2129838466644287,
+    "bytes": 21209351,
+    "sha256": "ae0c904d15e47f0b1b922243534413927f985e862c9316fc06cb44566043738c"
+  },
+  {
+    "tag": "molecule",
+    "exit": 0,
+    "build_seconds": 0.6792528629302979,
+    "bytes": 17019143,
+    "sha256": "75b66f486af14f996a02128410f4208a810c6a15c792512c91de8d8645ffbede"
+  },
+  {
+    "tag": "dynamicgo",
+    "exit": 0,
+    "build_seconds": 0.8172464370727539,
+    "bytes": 19067143,
+    "sha256": "85bf3c7ef131b9b014cfcc299e35f1dcc5128faf75aff3d26ce2393ae33dd889"
+  },
+  {
+    "tag": "cffi",
+    "exit": 0,
+    "build_seconds": 0.8428595066070557,
+    "bytes": 17023512,
+    "sha256": "7102e6d65db49158e6d2f30fd2a39d6e94a45d9503580fa5c4f4fea25f47a6e3"
+  },
+  {
+    "tag": "rustffi",
+    "exit": 0,
+    "build_seconds": 0.858443021774292,
+    "bytes": 17023672,
+    "sha256": "8b460c839f5647b80ca8226cd4efe69c9b493f64dcc28258acd09f4d39e17f32"
+  },
+  {
+    "tag": "all",
+    "exit": 0,
+    "build_seconds": 1.1036982536315918,
+    "bytes": 24233912,
+    "sha256": "15b8b5be9de4fd97600957a4c85cabd78f44cc5620a4d951328bc8c822becb8b"
+  },
+  {
+    "tag": "kernel",
+    "bytes": 17019143,
+    "exit": 0
+  },
+  {
+    "tag": "table",
+    "bytes": 17019143,
+    "exit": 0
+  }
+]

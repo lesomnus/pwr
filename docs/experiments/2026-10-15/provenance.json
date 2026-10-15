@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-15",
+  "original_archives": {
+    "alternatives": "e5437c590a4bfab4b41cd87b2189ee51ae590faee0c2f823e92809162201b1a9",
+    "incremental": "d295d66a638e0e46897689a75213e6904100accf48f3bae6a2e38743e020b2a4"
+  },
+  "publication_changes": [
+    "Host identities replaced by A/B/C; host metadata paths anonymized.",
+    "Aggregates recomputed from unchanged numerical samples.",
+    "Standalone source uses the identical public cr commit via a pinned module version.",
+    "Report paths and reproduction instructions adapted to the repository.",
+    "Executables, Rust archive, machine credentials, and duplicated cr source snapshot excluded.",
+    "Derived CSV uses LF line endings; trailing whitespace in text metadata and module files normalized."
+  ],
+  "cr_commit": "1c81d493a8498e3ccefe2ba6f9d64c61fbe7dcd3",
+  "raw_sample_sha256": {
+    "alternatives/results/main-A.jsonl": "fbc7037a129b7d0aef07acbcea645d2d0974bf775519ebd4c90415127f2b6424",
+    "alternatives/results/main-B.jsonl": "03abd02a8d7209df7468cc7168eaa4d0acbe2a893d5572c661608680801b8531",
+    "alternatives/results/main-C.jsonl": "befe35ac7848b4fbe28ec8b0725bb2a5c9f807a2156249d7a8bcd830fd628902",
+    "alternatives/results/ffiopt-A.jsonl": "71619cd7fc76b6126c55daf8ab3ab7f8688ab52e509c02a644e469de16c6a372",
+    "alternatives/results/ffiopt-B.jsonl": "a29d447fec0fae5e8b2a20f8dc1e8e56b1d3f68eab49db62ecb227d8c7ede3e0",
+    "alternatives/results/ffiopt-C.jsonl": "d84e616d1ca6d926f1e81a8caecd1de6fbb2287479c13c8ba8bb3f8d519f4d6a",
+    "alternatives/results/extra-A.jsonl": "1f6f57ec5ae5854390a5951900720c3672d7c9968ee1add5fc7fe7d098bfc2a4",
+    "alternatives/results/extra-B.jsonl": "fe9415386285dadc2749322e7ca26566ae7489f5b28fa16ed4b3ab990105ad4c",
+    "alternatives/results/extra-C.jsonl": "827102661f768e95d0145c2e3c4726eb657ee9d4646566eb540b367602acc60d",
+    "alternatives/results/kernel-A.jsonl": "fb0eaf94c504ec96028d5795177aff0645aa9014bb8687497f503f346e87c339",
+    "alternatives/results/kernel-B.jsonl": "22e9e5976a5d7d1ae2b3aed5d3576d7d0f521a08f8e21407e73e624245c49b48",
+    "alternatives/results/kernel-C.jsonl": "992bef8091ac2d223f7550280ad7484efaee64c09c00ffc3be442b83f92aea64",
+    "alternatives/results/table-A.jsonl": "ac098a42dde2e8dc9d34e951791614d9d54494353b947f75384b5901d4cd9a67",
+    "alternatives/results/table-B.jsonl": "fec73921ef980dffa91515f0220277fdeb2188d4c9e71adf31273e780977bce5",
+    "alternatives/results/table-C.jsonl": "be6fbd98a81a2e70bb7851d0d97511c8bf990d1d504e46d63dac292b1c11f597",
+    "incremental/results/scan-A.jsonl": "6da77666544e0b2bc16486e23b13a86af0d338030e17055396e7188d289461fc",
+    "incremental/results/scan-B.jsonl": "9fec62770ae9b7d451ef019a8da9dbd68d61e3e77b853c9fb95f05d2ff87567f",
+    "incremental/results/scan-C.jsonl": "79a46def901f09d751b8d29859ffcb8f8e3cf0952c3ac70b1bf50d7534a3f84a"
+  }
+}

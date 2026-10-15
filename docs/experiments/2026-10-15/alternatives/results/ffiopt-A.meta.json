@@ -1,0 +1,30 @@
+{
+  "host": "A",
+  "start": 1792055127.6632786,
+  "binary": "bench-ffiopt",
+  "sha256": "a0c19d92b34fdf1fa94ae6a137d9a14faa897d0874e7e1ef250b3b1a6dfea3d6",
+  "bytes": 24233912,
+  "load_before": "0.39 0.63 0.42 1/725 2126678",
+  "command": [
+    "taskset",
+    "-c",
+    "2",
+    "./bench-ffiopt",
+    "-duration",
+    "100ms",
+    "-count",
+    "3",
+    "-seed",
+    "436",
+    "-backend",
+    "c_generic_last,c_generic_first,c_codegen_last,c_codegen_first,rust_generic_last,rust_generic_first,rust_codegen_last,rust_codegen_first,go_codegen_last,go_codegen_first,plan_last_alias",
+    "-fixtures",
+    "small,map256,blob8k",
+    "-count",
+    "5"
+  ],
+  "exit": 0,
+  "elapsed": 83.28761172294617,
+  "load_after": "0.91 0.74 0.48 1/725 2126754",
+  "max_rss_kib": 48320
+}

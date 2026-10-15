@@ -1,0 +1,26 @@
+{
+  "host": "C",
+  "start": 1792055722.9053636,
+  "binary": "bench-table",
+  "sha256": "419141ba2862940ffac0817c7d6e1af1f8c26773517271748852019b6ef98138",
+  "bytes": 24250296,
+  "load_before": "0.54 0.82 0.65 1/732 1447413",
+  "command": [
+    "taskset",
+    "-c",
+    "2",
+    "./bench-table",
+    "-duration",
+    "100ms",
+    "-count",
+    "3",
+    "-seed",
+    "409",
+    "-backend",
+    "descriptor_table_last,descriptor_table_first,descriptor_table_last_kernel,descriptor_table_first_kernel,go_kernel_project_last,go_kernel_project_first,go_codegen_last,go_codegen_first,c_codegen_last,c_codegen_first"
+  ],
+  "exit": 0,
+  "elapsed": 88.07424449920654,
+  "load_after": "0.95 0.88 0.68 1/732 1447449",
+  "max_rss_kib": 52588
+}

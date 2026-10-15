@@ -1,0 +1,7 @@
+/.bench-cr/
+**/bin/
+**/__pycache__/
+*.test
+*.prof
+*.out
+*.a

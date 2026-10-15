@@ -1,0 +1,73 @@
+package cbridge
+
+/*
+#cgo CFLAGS: -O3
+#include "bridge.h"
+*/
+import "C"
+import (
+	"fmt"
+	"runtime"
+	"unsafe"
+)
+
+func Noop() { C.lab_noop() }
+func Single(raw []byte, field uint32, first bool) (int, int, error) {
+	if len(raw) == 0 {
+		return 0, 0, nil
+	}
+	var out C.lab_span
+	mode := C.int(0)
+	if first {
+		mode = 1
+	}
+	if C.lab_scan((*C.uchar)(unsafe.Pointer(unsafe.SliceData(raw))), C.size_t(len(raw)), C.uint32_t(field), mode, &out) != 0 {
+		return 0, 0, fmt.Errorf("invalid wire")
+	}
+	runtime.KeepAlive(raw)
+	return int(out.offset), int(out.length), nil
+}
+func Project(raw []byte, mask uint32, first bool) ([4][2]int, error) {
+	if len(raw) == 0 {
+		return [4][2]int{}, nil
+	}
+	var out [4]C.lab_span
+	mode := C.int(0)
+	if first {
+		mode = 1
+	}
+	if C.lab_project((*C.uchar)(unsafe.Pointer(unsafe.SliceData(raw))), C.size_t(len(raw)), C.uint32_t(mask), mode, &out[0]) != 0 {
+		return [4][2]int{}, fmt.Errorf("invalid wire")
+	}
+	runtime.KeepAlive(raw)
+	var res [4][2]int
+	for i, v := range out {
+		res[i] = [2]int{int(v.offset), int(v.length)}
+	}
+	return res, nil
+}
+func Batch(raw []byte, offsets []uintptr, mask uint32, first bool, out []uintptr) error {
+	mode := C.int(0)
+	if first {
+		mode = 1
+	}
+	if len(raw) == 0 {
+		for _, v := range offsets {
+			if v != 0 {
+				return fmt.Errorf("invalid empty batch")
+			}
+		}
+		clear(out)
+		return nil
+	}
+	if len(offsets) < 2 || len(out) < (len(offsets)-1)*8 {
+		return fmt.Errorf("invalid batch")
+	}
+	if C.lab_batch((*C.uchar)(unsafe.Pointer(unsafe.SliceData(raw))), (*C.size_t)(unsafe.Pointer(unsafe.SliceData(offsets))), C.size_t(len(offsets)-1), C.uint32_t(mask), mode, (*C.lab_span)(unsafe.Pointer(unsafe.SliceData(out)))) != 0 {
+		return fmt.Errorf("invalid wire")
+	}
+	runtime.KeepAlive(raw)
+	runtime.KeepAlive(offsets)
+	runtime.KeepAlive(out)
+	return nil
+}

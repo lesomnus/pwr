@@ -1,0 +1,24 @@
+{
+  "host": "C",
+  "start": 1792064060.0873387,
+  "binary": "scanbench",
+  "sha256": "d3e8d740fba68c23f8723551e43780e22d1689081e5641c654702aa06d4e511f",
+  "bytes": 17031431,
+  "load_before": "0.28 0.13 0.10 2/731 1452693",
+  "command": [
+    "taskset",
+    "-c",
+    "2",
+    "./scanbench",
+    "-duration",
+    "100ms",
+    "-count",
+    "3",
+    "-seed",
+    "409"
+  ],
+  "exit": 0,
+  "elapsed": 183.54421067237854,
+  "load_after": "1.02 0.59 0.30 1/732 1452826",
+  "max_rss_kib": 79232
+}
