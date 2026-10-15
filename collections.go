@@ -91,13 +91,13 @@ func (r *Reader) List(n protoreflect.FieldNumber) (*List, error) {
 			if e != nil {
 				return e
 			}
-			out.values = append(out.values, Value{kind: f.descriptor.Kind(), message: child})
+			out.values = append(out.values, Value{descriptor: f.descriptor, kind: f.descriptor.Kind(), message: child})
 			return nil
 		}
 		appendScalar := func(b []byte) error {
 			v, e := r.decode(f.descriptor.Kind(), b)
 			if e == nil {
-				out.values = append(out.values, Value{kind: f.descriptor.Kind(), scalar: v})
+				out.values = append(out.values, Value{descriptor: f.descriptor, kind: f.descriptor.Kind(), scalar: v})
 			}
 			return e
 		}
