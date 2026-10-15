@@ -4,9 +4,8 @@
 wire bytes, using an existing `protoreflect.MessageDescriptor` and a per-message
 offset cache. It does not need a generated reader for each message type.
 
-This is an experimental package. The current API reads **top-level singular
-strings outside real oneofs**. Nested messages, other scalar getters,
-collections, presence, and a CEL adapter are not implemented yet.
+This is an experimental package. The API supports all singular scalar types, nested messages/groups,
+oneofs, and protobuf presence. Collections and a CEL adapter are being added.
 
 ## Install
 
@@ -53,14 +52,20 @@ A subsequent read of 1 uses the cache; reading 3 resumes after 2. Field numbers
 need not appear in ascending order. A missing field scans to EOF and caches that
 fact. `AssumeUniqueScalars` does not verify the producer's promise.
 
+Nested messages use `reader.Message(number)`, returning nil for an absent field.
+Duplicate singular message/group records merge without copying their payloads.
+All scalar getters (`Bool`, `Enum`, `Int32`, `Int64`, `Uint32`, `Uint64`,
+`Float32`, `Float64`, `String`, `Bytes`) check the descriptor type.
+`WithLimits(Limits{MaxDepth: 100, MaxFields: 10000})` can bound read work.
+
 ## Contracts
 
 - `Schema` is immutable and can be shared between goroutines. Each `Reader`
   belongs to one message and must not be used concurrently.
 - The reader and returned strings borrow the input bytes. Keep that buffer
   immutable and alive while **either the reader or any returned string** is used.
-- Missing strings return the descriptor default (usually `""`). Presence is
-  not reported. Proto3 optional strings are supported.
+- Missing scalars return their descriptor default. `Has` reports protobuf
+  presence; `WhichOneof` reports the selected field. Proto3 optional is supported.
 - Returned strings are checked for valid UTF-8. `pwr.AssumeValidUTF8()` skips
   that check; byte-boundary checks remain enabled.
 - Validation is selective. Unrequested nested bodies are skipped, and early
@@ -71,7 +76,7 @@ fact. `AssumeUniqueScalars` does not verify the producer's promise.
 
 ## Design and experiments
 
-- [Design decisions and planned nested access](docs/design.md)
+- [Design decisions and nested access](docs/design.md)
 - [2026-10-15 experiments: results, raw data, and reproduction](docs/experiments/2026-10-15/README.md)
 
 The experiments measured historical prototypes, not this public package.

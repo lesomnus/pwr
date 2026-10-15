@@ -8,10 +8,10 @@
 필드만 읽는다. 메시지 전체를 객체로 만들지 않고, 접근 시 tag를 탐색하고
 위치를 캐시한다. CEL이나 payday를 모르는 독립 Go 패키지로 유지한다.
 
-현재 공개 getter는 `Reader.String(fieldNumber)` 하나다. 최상위 singular
-string과 proto3 optional string을 지원하며, real oneof·nested·repeated·map·
-다른 scalar·presence·CEL adapter는 아직 구현하지 않았다. 지원하지 않는
-필드를 포함한 descriptor도 컴파일할 수 있고, 해당 필드를 요청하면 오류다.
+현재 모든 singular scalar getter, nested message/group 병합, real oneof와
+presence를 지원한다. repeated/map, CEL adapter와 재사용 기능은 다음 구현 단위다.
+`WithLimits`로 중첩 깊이와 reader tree의 wire record/byte 방문량을 제한한다.
+
 
 ## 확정한 기본 구조
 
@@ -21,7 +21,9 @@ string과 proto3 optional string을 지원하며, real oneof·nested·repeated·
 `Schema`는 불변이며 여러 goroutine에서 공유할 수 있다.
 
 `Schema.NewReader(raw, options...)`는 메시지 하나의 cursor, offset index,
-EOF와 오류 상태를 가진다. 입력은 복사하지 않으며 index 배열도 첫 지원 필드
+EOF와 오류 상태를 가진다. 복합 필드는 최초~최종 occurrence의 범위를 저장하고,
+실제 요청할 때 그 범위를 다시 읽어 필요한 payload 구간을 모은다. 무관한
+repeated/map occurrence마다 메모리를 할당하지 않는다. 입력은 복사하지 않으며 index 배열도 첫 지원 필드
 접근까지 할당하지 않는다. Reader는 동시 사용하지 않는다. offset은 32bit로
 저장하므로 입력은 2 GiB 미만으로 제한한다.
 
@@ -63,8 +65,9 @@ descriptor table은 생성된 Go switch와 비슷한 CEL 시간을 보였고, C�
   발견하지 않을 수 있다.
 - 잘못된 wire type으로 나타난 문자열 필드는 unknown record처럼 건너뛴다.
   올바른 문자열 occurrence를 덮어쓰지 않는다.
-- 누락 필드는 descriptor default를 반환한다. 빈 문자열과 미존재를 구분하는
-  presence API는 없다. required 필드의 존재도 검증하지 않는다.
+- 누락 필드는 descriptor default를 반환한다. `Has`는 explicit presence 또는
+  implicit scalar의 non-default 여부를 따른다. `WhichOneof`는 최종 선택을 반환한다.
+  required 필드의 존재를 일반 getter가 강제로 검증하지는 않는다.
 - 발견한 wire/UTF-8 오류는 sticky다. unknown/unsupported getter 요청은
   Reader의 나머지 정상 접근을 막지 않는다. nil/zero Schema와 과대 입력은
   첫 `String` 호출에서 오류로 보고한다.
@@ -73,23 +76,21 @@ descriptor table은 생성된 Go switch와 비슷한 CEL 시간을 보였고, C�
   뒤에도 반환 문자열을 사용한다면 이 계약은 계속된다. 독립 수명이 필요하면
   호출자가 문자열을 복사한다.
 
-## Nested message 접근: 가능하지만 후속 구현
+## Nested message와 oneof
 
-하위 메시지의 payload 구간과 descriptor로 child Reader를 만드는 것은 가능하다.
-부모를 완전히 unmarshal할 필요는 없다. 다만 singular embedded message가
-반복되면 protobuf는 내용을 병합하므로 마지막 payload 하나만 고르면 안 된다.
-scalar의 마지막 값 선택과 message 병합은 다른 규칙이다.
-공식 [encoding 설명](https://protobuf.dev/programming-guides/encoding/#last-one-wins)을 따른다.
+`Message(number)`는 child Reader 또는 미존재 시 nil을 반환한다. descriptor
+그래프는 memoization으로 자기참조를 처리하고, child는 payload 구간들을 참조해
+복사 없이 읽는다. 중복 singular message/group의 구간을 wire 순서로 읽어 병합한다.
+여러 occurrence를 합친 child에서는 scalar uniqueness 옵션과 무관하게 last를 택한다.
 
-후속 설계에서는 같은 필드의 모든 관련 occurrence를 wire 순서대로 보존하고,
-여러 구간을 읽는 child Reader 또는 올바른 병합 fallback을 고려한다. 뒤에
-추가 occurrence가 있는지 확인하려면 부모의 나머지도 탐색해야 한다.
-`AssumeUniqueScalars`는 embedded message의 단일 occurrence를 보장하지 않는다.
+Oneof는 최종 선택을 확인하기 위해 부모 스캔을 끝낸다. 같은 message 멤버의
+연속 occurrence는 병합하지만 다른 멤버로 전환하면 이전 내용은 폐기한다.
+번호 순서는 가정하지 않는다. [공식 wire 의미](https://protobuf.dev/programming-guides/encoding/#last-one-wins)와
+표준 Go decoder에 대한 differential test로 확인한다.
 
-구현 전에 함께 정해야 할 항목은 recursive descriptor의 memoization,
-중첩 깊이와 읽기 예산, oneof 교체, repeated/packed 순서, map의 중복 key,
-presence다. 초기 API에 동작하지 않는 `Message()` 같은 메서드를 미리 노출하지
-않는다. 다른 scalar getter·CEL adapter·pooling/reset도 후속 과제로 남긴다.
+기본 최대 중첩은 100이며 unknown group도 명시적 stack으로 제한한다.
+MaxFields/MaxBytes는 설정 시 child와 공유하며, 복합 필드 추출을 위한 재방문도 센다.
+일반 message body는 getter에서 접근할 때까지 내부를 해석하지 않는다.
 
 ## 실험 수치의 적용 범위
 

@@ -154,7 +154,7 @@ func TestSelectiveErrors(t *testing.T) {
 	if got, err := r.String(1); err != nil || got != "ok" {
 		t.Fatal(got, err)
 	}
-	for _, num := range []protoreflect.FieldNumber{4, 5, 6, 7} {
+	for _, num := range []protoreflect.FieldNumber{4, 5, 7} {
 		if _, err := r.String(num); !errors.Is(err, ErrUnsupportedField) {
 			t.Fatal(num, err)
 		}

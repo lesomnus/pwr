@@ -1,11 +1,9 @@
-// Package pwr reads selected Protocol Buffers fields from wire bytes using a
-// precompiled descriptor and a per-message offset index.
+// Package pwr reads selected Protocol Buffers fields from borrowed wire bytes.
+// Schemas reuse existing descriptors. Readers index records incrementally under
+// explicit input assumptions, and merge nested messages without concatenation.
 //
-// This experimental version exposes only singular string fields outside real
-// oneofs. It does not implement nested access, collections, a presence API, or
-// complete protobuf validation. See the repository's docs/design.md for scope.
-//
-// A Schema is immutable and may be shared. A Reader belongs to one message and
-// must not be used concurrently. Readers and returned strings borrow the input;
-// callers must not modify or recycle that buffer while either is in use.
+// Singular scalars, messages/groups, oneofs and presence are supported. Validation
+// is selective. Schemas may be shared; a reader and its descendants may not be
+// used concurrently. Input buffers must remain immutable while borrowed values
+// are in use. See docs/design.md for semantics and limits.
 package pwr
