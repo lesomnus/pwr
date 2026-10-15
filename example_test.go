@@ -9,9 +9,9 @@ import (
 )
 
 func Example() {
-	// Use an existing generated descriptor. Type.name is field 1; Type.fields
+	// Use a protobuf message to select its type. Type.name is field 1; Type.fields
 	// is a repeated message. The latter can be skipped without decoding it.
-	schema, err := pwr.Compile((&typepb.Type{}).ProtoReflect().Descriptor())
+	schema, err := pwr.CompileMessage(&typepb.Type{})
 	if err != nil {
 		panic(err)
 	}

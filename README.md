@@ -22,7 +22,7 @@ go get github.com/lesomnus/pwr
 Compile a schema once and reuse it for messages of that type:
 
 ```go
-schema, err := pwr.Compile((&typepb.Type{}).ProtoReflect().Descriptor())
+schema, err := pwr.CompileMessage(&typepb.Type{})
 if err != nil {
     return err
 }
@@ -39,6 +39,11 @@ fmt.Println(name)
 Imports: `github.com/lesomnus/pwr` and
 `google.golang.org/protobuf/types/known/typepb`.
 See the [executable example](example_test.go).
+
+`CompileMessage` accepts generated or dynamic `proto.Message` values and uses
+only their descriptor. The message's contents are not read or retained; pass a
+non-nil message, such as `&typepb.Type{}`. Nil and typed nil messages return
+`ErrInvalidSchema`. If you already have a descriptor, use `pwr.Compile(descriptor)`.
 
 By default, the first supported field access scans to the end of the message
 and remembers the last scalar occurrence. Later accesses use cached offsets.

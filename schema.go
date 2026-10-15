@@ -3,7 +3,10 @@ package pwr
 import (
 	"errors"
 	"fmt"
+	"reflect"
+
 	"google.golang.org/protobuf/encoding/protowire"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -31,7 +34,7 @@ func (f field) composite() bool {
 }
 
 // Schema is an immutable descriptor graph and field-number dispatch plan.
-// Use Compile to construct it. Schemas may be shared across goroutines.
+// Use Compile or CompileMessage to construct it. Schemas may be shared across goroutines.
 type Schema struct {
 	descriptor protoreflect.MessageDescriptor
 	dense      []int
@@ -44,6 +47,29 @@ type Schema struct {
 func Compile(md protoreflect.MessageDescriptor) (*Schema, error) {
 	return compile(md, make(map[protoreflect.MessageDescriptor]*Schema))
 }
+
+// CompileMessage compiles the descriptor of a generated or dynamic protobuf
+// message. It does not read or retain the message's field values. Compile once
+// and reuse the schema for wire bytes of that type. Nil messages, including
+// typed nil pointers, return ErrInvalidSchema.
+func CompileMessage(message proto.Message) (*Schema, error) {
+	if message == nil {
+		return nil, ErrInvalidSchema
+	}
+	v := reflect.ValueOf(message)
+	switch v.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.Slice:
+		if v.IsNil() {
+			return nil, ErrInvalidSchema
+		}
+	}
+	m := message.ProtoReflect()
+	if m == nil {
+		return nil, ErrInvalidSchema
+	}
+	return Compile(m.Descriptor())
+}
+
 func compile(md protoreflect.MessageDescriptor, memo map[protoreflect.MessageDescriptor]*Schema) (*Schema, error) {
 	if md == nil || md.IsPlaceholder() {
 		return nil, ErrInvalidSchema

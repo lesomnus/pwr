@@ -21,6 +21,12 @@ CEL adapter는 `github.com/lesomnus/pwr/cel` 별도 모듈로 제공한다.
 최대 필드 번호가 4096 이하면 dense table, 그보다 크면 sparse map을 사용한다.
 `Schema`는 불변이며 여러 goroutine에서 공유할 수 있다.
 
+`CompileMessage(proto.Message)`는 generated/dynamic 메시지에서 descriptor를
+꺼내 `Compile`에 전달하는 편의 함수다. 예: `pwr.CompileMessage(&app.Manifest{})`.
+메시지의 필드 값은 읽거나 보관하지 않으며 nil(typed nil 포함)은
+`ErrInvalidSchema`로 반환한다. Schema 준비 시 한 번 사용하는 API이므로
+이벤트별 wire 읽기 경로에는 추가 비용이 없다.
+
 `Schema.NewReader(raw, options...)`는 메시지 하나의 cursor, offset index,
 EOF와 오류 상태를 가진다. 복합 필드는 최초~최종 occurrence의 범위를 저장하고,
 실제 요청할 때 그 범위를 다시 읽어 필요한 payload 구간을 모은다. 무관한
