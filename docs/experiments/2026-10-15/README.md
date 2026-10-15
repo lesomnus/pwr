@@ -4,6 +4,9 @@
 기억하는 점진적 reader를 구현해 추가 측정했다. 세 테스트 머신에서 총
 **18,936개 원시 샘플, 2,016개 집계 조건**을 기록했다.
 
+공개 API 확장 후의 별도 로컬 측정은 [public-api](public-api/README.md)에 있다.
+위 샘플 수와 아래 historical PoC 결과에는 포함하지 않는다.
+
 | 실험 | 보고서 | 원시 결과·집계 | 측정 코드 |
 | --- | --- | --- | --- |
 | Go·기존 라이브러리·Go/C/Rust 생성·바인딩 | [전체 비교](alternatives/REPORT.ko.md) | [results](alternatives/results/) | [standalone module](../../../experiments/2026-10-15/alternatives/) |

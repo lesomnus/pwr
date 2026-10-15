@@ -1,0 +1,42 @@
+goos: linux
+goarch: amd64
+pkg: github.com/lesomnus/pwr/cel
+cpu: AMD Ryzen 7 5825U with Radeon Graphics         
+BenchmarkEvaluation/name/native_decoded         	  779402	       267.6 ns/op	      32 B/op	       2 allocs/op
+BenchmarkEvaluation/name/native_decoded         	  819337	       259.5 ns/op	      32 B/op	       2 allocs/op
+BenchmarkEvaluation/name/native_decoded         	  943466	       228.3 ns/op	      32 B/op	       2 allocs/op
+BenchmarkEvaluation/name/native_unmarshal       	   12034	     14649 ns/op	   15553 B/op	     139 allocs/op
+BenchmarkEvaluation/name/native_unmarshal       	   10000	     16245 ns/op	   15553 B/op	     139 allocs/op
+BenchmarkEvaluation/name/native_unmarshal       	   10000	     15054 ns/op	   15553 B/op	     139 allocs/op
+BenchmarkEvaluation/name/adapter_decoded        	  291422	       674.3 ns/op	     184 B/op	       7 allocs/op
+BenchmarkEvaluation/name/adapter_decoded        	  273642	       755.0 ns/op	     184 B/op	       7 allocs/op
+BenchmarkEvaluation/name/adapter_decoded        	  255448	       661.6 ns/op	     184 B/op	       7 allocs/op
+BenchmarkEvaluation/name/reader                 	   56488	      2897 ns/op	     488 B/op	       7 allocs/op
+BenchmarkEvaluation/name/reader                 	   57033	      2902 ns/op	     488 B/op	       7 allocs/op
+BenchmarkEvaluation/name/reader                 	   60817	      2919 ns/op	     488 B/op	       7 allocs/op
+BenchmarkEvaluation/name/unique                 	  243406	       671.1 ns/op	     488 B/op	       7 allocs/op
+BenchmarkEvaluation/name/unique                 	  248679	       668.3 ns/op	     488 B/op	       7 allocs/op
+BenchmarkEvaluation/name/unique                 	  245503	       673.9 ns/op	     488 B/op	       7 allocs/op
+BenchmarkEvaluation/name/reset_unique           	  354831	       552.4 ns/op	     216 B/op	       5 allocs/op
+BenchmarkEvaluation/name/reset_unique           	  367128	       552.8 ns/op	     216 B/op	       5 allocs/op
+BenchmarkEvaluation/name/reset_unique           	  361167	       556.6 ns/op	     216 B/op	       5 allocs/op
+BenchmarkEvaluation/all_children/native_decoded 	    7088	     24136 ns/op	    4281 B/op	      68 allocs/op
+BenchmarkEvaluation/all_children/native_decoded 	    8828	     22977 ns/op	    4281 B/op	      68 allocs/op
+BenchmarkEvaluation/all_children/native_decoded 	    8361	     24400 ns/op	    4281 B/op	      68 allocs/op
+BenchmarkEvaluation/all_children/native_unmarshal         	    4502	     41172 ns/op	   19806 B/op	     205 allocs/op
+BenchmarkEvaluation/all_children/native_unmarshal         	    5209	     36529 ns/op	   19806 B/op	     205 allocs/op
+BenchmarkEvaluation/all_children/native_unmarshal         	    5236	     36573 ns/op	   19806 B/op	     205 allocs/op
+BenchmarkEvaluation/all_children/adapter_decoded          	    4928	     41887 ns/op	   10235 B/op	     332 allocs/op
+BenchmarkEvaluation/all_children/adapter_decoded          	    4989	     39569 ns/op	   10235 B/op	     332 allocs/op
+BenchmarkEvaluation/all_children/adapter_decoded          	    5304	     39412 ns/op	   10235 B/op	     332 allocs/op
+BenchmarkEvaluation/all_children/reader                   	    2422	     62683 ns/op	   53658 B/op	     468 allocs/op
+BenchmarkEvaluation/all_children/reader                   	    2494	     69158 ns/op	   53657 B/op	     468 allocs/op
+BenchmarkEvaluation/all_children/reader                   	    2762	     62098 ns/op	   53657 B/op	     468 allocs/op
+BenchmarkEvaluation/all_children/unique                   	    2847	     60526 ns/op	   53657 B/op	     468 allocs/op
+BenchmarkEvaluation/all_children/unique                   	    2853	     60923 ns/op	   53657 B/op	     468 allocs/op
+BenchmarkEvaluation/all_children/unique                   	    2786	     60967 ns/op	   53657 B/op	     468 allocs/op
+BenchmarkEvaluation/all_children/reset_unique             	    2660	     60352 ns/op	   53129 B/op	     464 allocs/op
+BenchmarkEvaluation/all_children/reset_unique             	    2780	     60169 ns/op	   53129 B/op	     464 allocs/op
+BenchmarkEvaluation/all_children/reset_unique             	    2666	     60800 ns/op	   53129 B/op	     464 allocs/op
+PASS
+ok  	github.com/lesomnus/pwr/cel	7.069s

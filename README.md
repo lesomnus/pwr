@@ -98,6 +98,7 @@ eager standard-decoder fallbacks for complete validation and native conversion.
 
 - [Design decisions and nested access](docs/design.md)
 - [2026-10-15 experiments: results, raw data, and reproduction](docs/experiments/2026-10-15/README.md)
+- [Public API smoke benchmarks and tradeoffs](docs/experiments/2026-10-15/public-api/README.md)
 
 The experiments measured historical prototypes, not this public package.
 They include CEL adapters and native kernels that are not part of the root API.

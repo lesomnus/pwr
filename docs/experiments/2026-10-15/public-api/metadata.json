@@ -1,0 +1,17 @@
+{
+  "date_utc": "2026-10-15T16:57:27.780714+00:00",
+  "implementation_commit": "254b4ac321ae537126086a8cb3ba47ef2def013e",
+  "go": "go version go1.27.1 linux/amd64",
+  "cpu": "AMD Ryzen 7 5825U with Radeon Graphics",
+  "os": "linux",
+  "arch": "amd64",
+  "gomaxprocs": 1,
+  "benchtime": "150ms",
+  "count": 3,
+  "affinity": null,
+  "execution": "reader then cel, sequential",
+  "source_sha256": {
+    "benchmark_test.go": "6c9bff488da76614f6fb223313e68f9269a6e099e59189b776b2b6c1c4a40f4f",
+    "cel/benchmark_test.go": "ac2b6a0d3a44ad943129ad0663a493dd61c6e99b74506fa6a994971c5ce4b99b"
+  }
+}

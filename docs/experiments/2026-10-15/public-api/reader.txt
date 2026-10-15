@@ -1,0 +1,36 @@
+goos: linux
+goarch: amd64
+pkg: github.com/lesomnus/pwr
+cpu: AMD Ryzen 7 5825U with Radeon Graphics         
+BenchmarkName/children=0/unmarshal         	 1033315	       157.7 ns/op	     168 B/op	       2 allocs/op
+BenchmarkName/children=0/unmarshal         	 1130180	       157.7 ns/op	     168 B/op	       2 allocs/op
+BenchmarkName/children=0/unmarshal         	 1132024	       160.1 ns/op	     168 B/op	       2 allocs/op
+BenchmarkName/children=0/reader            	 1167970	       157.8 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=0/reader            	 1185598	       152.6 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=0/reader            	 1175235	       169.7 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=0/unique            	 1131610	       159.2 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=0/unique            	  967351	       158.3 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=0/unique            	 1138522	       157.8 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=0/reset_unique      	 1954394	        94.09 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=0/reset_unique      	 1911697	        96.12 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=0/reset_unique      	 1948849	        92.57 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=0/pool_unique       	 1472991	       122.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=0/pool_unique       	 1472848	       135.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=0/pool_unique       	 1351783	       128.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=64/unmarshal        	   17263	     10026 ns/op	   15520 B/op	     137 allocs/op
+BenchmarkName/children=64/unmarshal        	   17700	      9937 ns/op	   15520 B/op	     137 allocs/op
+BenchmarkName/children=64/unmarshal        	   17702	     10515 ns/op	   15520 B/op	     137 allocs/op
+BenchmarkName/children=64/reader           	   78013	      2253 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=64/reader           	   78004	      2252 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=64/reader           	   77590	      2254 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=64/unique           	 1111580	       161.3 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=64/unique           	 1115989	       161.4 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=64/unique           	 1120135	       161.3 ns/op	     272 B/op	       2 allocs/op
+BenchmarkName/children=64/reset_unique     	 1936096	        93.11 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=64/reset_unique     	 1899945	        97.19 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=64/reset_unique     	 1939071	        92.40 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=64/pool_unique      	 1457383	       130.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=64/pool_unique      	 1471054	       122.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName/children=64/pool_unique      	 1472101	       122.8 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/lesomnus/pwr	8.866s
