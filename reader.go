@@ -43,6 +43,8 @@ type segment struct {
 // concurrently. Returned strings/bytes also borrow the input: keep it immutable
 // while any of these values is in use.
 type Reader struct {
+	owner                   *Pool
+	returned                bool
 	schema                  *Schema
 	raw                     []byte
 	parts                   []segment
@@ -99,6 +101,9 @@ func (r *Reader) Schema() *Schema {
 }
 
 func (r *Reader) status() error {
+	if r != nil && r.returned {
+		return ErrPoolOwnership
+	}
 	if r == nil || r.schema == nil {
 		return ErrInvalidSchema
 	}

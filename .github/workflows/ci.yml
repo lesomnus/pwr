@@ -18,7 +18,9 @@ jobs:
       - run: go vet ./...
       - run: go test -race ./...
       - if: matrix.go == 'stable'
-        run: go test -run '^$' -fuzz '^FuzzReader$' -fuzztime 10s -parallel 2
+        run: |
+          go test -run '^$' -fuzz '^FuzzReader$' -fuzztime 10s -parallel 2
+          go test -run '^$' -fuzz '^FuzzCollections$' -fuzztime 10s -parallel 2
   data:
     runs-on: ubuntu-latest
     steps:

@@ -9,7 +9,7 @@
 위치를 캐시한다. CEL이나 payday를 모르는 독립 Go 패키지로 유지한다.
 
 현재 모든 singular scalar getter, nested message/group 병합, real oneof와
-presence를 지원한다. repeated/map, CEL adapter와 재사용 기능은 다음 구현 단위다.
+presence, repeated/packed·map, 재사용과 pool을 지원한다. CEL adapter는 별도 모듈로 추가한다.
 `WithLimits`로 중첩 깊이와 reader tree의 wire record/byte 방문량을 제한한다.
 
 
@@ -53,7 +53,7 @@ descriptor table은 생성된 Go switch와 비슷한 CEL 시간을 보였고, C�
 
 관심 필드를 미리 모두 아는 경우에는 한 번에 수집하는 방식이 더 저렴할 수
 있다. 점진적 index는 실행 중 접근 필드가 정해지거나 CEL 단락 평가처럼 뒤의
-접근을 생략할 수 있을 때 유용하다. 정적 계획 수집 API는 현재 제공하지 않는다.
+접근을 생략할 수 있을 때 유용하다. `Schema.Plan`과 `Reader.Prefetch`로 필드 집합의 index를 미리 준비할 수 있다.
 
 ## 검증, 오류와 소유권
 
@@ -90,7 +90,34 @@ Oneof는 최종 선택을 확인하기 위해 부모 스캔을 끝낸다. 같은
 
 기본 최대 중첩은 100이며 unknown group도 명시적 stack으로 제한한다.
 MaxFields/MaxBytes는 설정 시 child와 공유하며, 복합 필드 추출을 위한 재방문도 센다.
+Packed value도 MaxFields에 포함하여 작은 wire 입력으로 큰 배열을 만들 때 제한한다.
 일반 message body는 getter에서 접근할 때까지 내부를 해석하지 않는다.
+
+## 컬렉션·재사용·전체 변환
+
+Repeated 필드는 packed/unpacked가 섞여도 wire 순서를 유지한다. 각 message
+원소는 독립적인 child Reader다. Map은 entry 내부의 message value를 병합하고,
+동일 key의 나중 entry가 전체 이전 value를 대체한다. 누락 key/value는 protobuf
+기본값을 따른다. 컬렉션 자체는 요청할 때 해석하고 캐시하되 child body는 lazy다.
+
+`Get`의 `Value`, `List`, `Map`은 읽기 전용이며 bytes는 입력과 storage를 공유한다.
+`Has`는 빈 packed list를 미존재로 보고, map/repeated는 원소 수로 판정한다.
+Implicit float presence는 Go protobuf와 같이 -0도 보존한다.
+
+`Reset`은 root의 index를 재사용하며 기존 child/collection/string/bytes는 옛
+입력과 예산을 유지한다. 새 입력의 예산은 새로 시작한다. Pool은 schema/옵션이
+고정되고 Get/Put은 동시 사용 가능하지만, checkout된 Reader에는 한 소유자만 있다.
+Put은 참조를 제거하며 외부 Reader와 이중 반환을 거부한다. 반환 후 그 root
+포인터를 다시 사용하면 안 된다. Child는 pool에 들어가지 않는다.
+
+`Validate`/`Materialize`는 명시적인 eager fallback이다. 먼저 모든 알려진 wire
+occurrence를 방문해 depth/작업 예산을 적용한 뒤 표준 decoder로 전체를 검증한다.
+빠른 입력 가정은 이 경로에 적용하지 않는다. Required 검사는 fragment 병합 후에
+수행하며 unknown 필드도 보존한다. 일반 getter의 선택적 검증과 구분한다.
+
+`View`는 Any 같은 bytes envelope를 다른 schema로 해석할 때 depth/예산을 공유한다.
+Extension 전용 lazy getter는 제공하지 않으며 native materialization에서는 표준
+protobuf resolver의 처리를 따른다.
 
 ## 실험 수치의 적용 범위
 

@@ -12,8 +12,13 @@ func (r *Reader) Has(n protoreflect.FieldNumber) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if f.descriptor.IsList() || f.descriptor.IsMap() {
-		return false, ErrUnsupportedField
+	if f.descriptor.IsMap() {
+		v, e := r.Map(n)
+		return v.Len() > 0, e
+	}
+	if f.descriptor.IsList() {
+		v, e := r.List(n)
+		return v.Len() > 0, e
 	}
 	if err = r.ensure(slot, f.composite() || f.oneof != 0); err != nil {
 		return false, err

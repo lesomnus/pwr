@@ -5,7 +5,8 @@ wire bytes, using an existing `protoreflect.MessageDescriptor` and a per-message
 offset cache. It does not need a generated reader for each message type.
 
 This is an experimental package. The API supports all singular scalar types, nested messages/groups,
-oneofs, and protobuf presence. Collections and a CEL adapter are being added.
+oneofs, protobuf presence, repeated/packed fields, and maps. A separate CEL
+adapter is being added.
 
 ## Install
 
@@ -57,6 +58,24 @@ Duplicate singular message/group records merge without copying their payloads.
 All scalar getters (`Bool`, `Enum`, `Int32`, `Int64`, `Uint32`, `Uint64`,
 `Float32`, `Float64`, `String`, `Bytes`) check the descriptor type.
 `WithLimits(Limits{MaxDepth: 100, MaxFields: 10000})` can bound read work.
+
+Collections use `List(number)` / `Map(number)` or the generic `Get(number)`:
+
+```go
+items, err := reader.List(2)
+if err != nil { return err }
+item, err := items.Get(0)
+if err != nil { return err }
+child := item.Message() // for a repeated message field
+_ = child
+```
+
+`reader.Reset(nextBytes)` reuses the root index. `schema.NewPool(options...)`
+provides concurrent `Get(bytes)` / `Put(reader)` for exclusive per-reader ownership.
+Returned child views keep their old input and budget after a root reset.
+`schema.Plan(fieldNumbers...)` and `plan.Read(raw, options...)` can index a known
+access set in advance. `reader.Validate()` and `reader.Materialize()` are explicit,
+eager standard-decoder fallbacks for complete validation and native conversion.
 
 ## Contracts
 
