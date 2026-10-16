@@ -22,17 +22,11 @@ go get github.com/lesomnus/pwr
 Compile a schema once and reuse it for messages of that type:
 
 ```go
-schema, err := pwr.CompileMessage(&typepb.Type{})
-if err != nil {
-    return err
-}
+schema, _ := pwr.CompileMessage(&typepb.Type{})
 
 // raw contains the wire encoding of google.protobuf.Type.
 reader := schema.NewReader(raw)
-name, err := reader.String(1) // Type.name
-if err != nil {
-    return err
-}
+name, _ := reader.String(1) // Type.name
 fmt.Println(name)
 ```
 
@@ -68,10 +62,8 @@ All scalar getters (`Bool`, `Enum`, `Int32`, `Int64`, `Uint32`, `Uint64`,
 Collections use `List(number)` / `Map(number)` or the generic `Get(number)`:
 
 ```go
-items, err := reader.List(2)
-if err != nil { return err }
-item, err := items.Get(0)
-if err != nil { return err }
+items, _ := reader.List(2)
+item, _ := items.Get(0)
 child := item.Message() // for a repeated message field
 _ = child
 ```

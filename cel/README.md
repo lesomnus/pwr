@@ -12,22 +12,18 @@ Register descriptors once, compile your expression once, and pass a new or reset
 reader for each evaluation:
 
 ```go
-schema, err := pwr.CompileMessage(&typepb.Type{})
-if err != nil { return err }
+schema, _ := pwr.CompileMessage(&typepb.Type{})
 md := schema.Descriptor()
-adapter, err := pwrcel.New(md)
-if err != nil { return err }
+adapter, _ := pwrcel.New(md)
 options := append(adapter.EnvOptions(),
     cel.Variable("message", cel.ObjectType(string(md.FullName()))))
-env, err := cel.NewEnv(options...)
-if err != nil { return err }
-ast, issues := env.Compile(`message.name == "Artifact"`)
-if issues.Err() != nil { return issues.Err() }
-program, err := env.Program(ast)
-if err != nil { return err }
-result, _, err := program.Eval(map[string]any{
+env, _ := cel.NewEnv(options...)
+ast, _ := env.Compile(`message.name == "Artifact"`)
+program, _ := env.Program(ast)
+result, _, _ := program.Eval(map[string]any{
     "message": schema.NewReader(raw),
 })
+fmt.Println(result)
 ```
 
 See the [complete executable example](example_test.go) for imports and nested
